@@ -1,5 +1,9 @@
 # Clustering_Classification-for-Discrete-Curves (k-means, k-medoids)
 
+Metric Distance
+1.Discrete Frechet
+2. Dynamic Time Warping
+
 Initialization 
 1. K-means++  
 2. Random selection of k-points (simplest) 
