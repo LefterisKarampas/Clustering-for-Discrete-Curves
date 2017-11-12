@@ -1,7 +1,7 @@
 # Clustering_Classification-for-Discrete-Curves (k-means, k-medoids)
 
 Metric Distance
-1.Discrete Frechet
+1. Discrete Frechet
 2. Dynamic Time Warping
 
 Initialization 
