@@ -1,4 +1,4 @@
-# Clustering_Classification-for-Discrete-Curves (k-means, k-medoids)
+# Clustering-for-Discrete-Curves (k-means, k-medoids)
 
 Metric Distance
 1. Discrete Frechet
