@@ -2,10 +2,10 @@
 #define _TYPES_H_
 
 #include <iostream>
+#include "Curve.h"
 #include <vector>
 
-typedef std::vector < std::vector<double>  > T_Curve;
-typedef std::vector<double> T_GridCurve;
-
+typedef std::vector<double> Point;
+typedef std::vector< Point > T_Curve;
 
 #endif

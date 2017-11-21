@@ -1,7 +1,9 @@
 #ifndef _CURVE_INFO_H_
 #define _CURVE_INFO_H_
 
-template <typename T_Curve>
+
+#include "Types.h"
+
 class Curve_Info{
 	T_Curve * curve;
 	char * id;

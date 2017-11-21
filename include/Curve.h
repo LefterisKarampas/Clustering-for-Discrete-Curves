@@ -2,17 +2,19 @@
 #define CURVE_H_
 
 #include <vector>
+#include <iostream>
 
+typedef std::vector<double> Point;
+typedef std::vector< Point > T_Curve;
 
-template <typename T_Curve,typename T_GridCurve>
 class Curve{
 	T_Curve * curve;
-	T_GridCurve *grid_curve;
+	Point *grid_curve;
 	char * id;
 public:
-	Curve(T_Curve *, T_GridCurve *,char *);
+	Curve(T_Curve *, Point *,char *);
 	~Curve();
-	const T_GridCurve & Get_GridCurve();
+	const Point & Get_GridCurve();
 	bool Compare_GridCurve(Curve *);
 	char * GetId();
 	T_Curve & GetCurve();

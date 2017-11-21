@@ -1,36 +1,35 @@
-#include "../include/Curve.h"
 #include <iostream>
 #include <vector>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "../include/Curve.h"
 
 using namespace std;
 
 //Create a Curve object
-template <typename T_Curve,typename T_GridCurve>
-Curve<T_Curve,T_GridCurve>::Curve(T_Curve * curve_,T_GridCurve * grid_curve_,char *id_):curve(curve_),grid_curve(grid_curve_){
+
+Curve::Curve(T_Curve * curve_,Point * grid_curve_,char *id_):curve(curve_),grid_curve(grid_curve_){
 	this->id = id_;
 }
 
-template <typename T_Curve,typename T_GridCurve>
-Curve<T_Curve,T_GridCurve>::~Curve(){				//Delete Curve object
+
+Curve::~Curve(){				//Delete Curve object
 	delete this->grid_curve;						//Delete only the grid_curve, id and curve maybe are used from other LSH HT
 }	
 
 
-template <typename T_Curve,typename T_GridCurve>
-const T_GridCurve & Curve<T_Curve,T_GridCurve>::Get_GridCurve(){
+
+const Point & Curve::Get_GridCurve(){
 	return *(this->grid_curve);
 }
 
-template <typename T_Curve,typename T_GridCurve>
-bool Curve<T_Curve,T_GridCurve>::Compare_GridCurve(Curve *v){
+
+bool Curve::Compare_GridCurve(Curve *v){
 	if(!strcmp(v->GetId(),this->GetId())){
 		return false;
 	}
-	T_GridCurve t1 = v->Get_GridCurve();
+	Point t1 = v->Get_GridCurve();
 	if(t1.size() != this->grid_curve->size()){
 		return false;
 	}
@@ -44,20 +43,20 @@ bool Curve<T_Curve,T_GridCurve>::Compare_GridCurve(Curve *v){
 	}
 }
 
-template <typename T_Curve,typename T_GridCurve>
-char * Curve<T_Curve,T_GridCurve>::GetId(){
+
+char * Curve::GetId(){
 	return this->id;
 }
 
 
-template <typename T_Curve,typename T_GridCurve>
-T_Curve & Curve<T_Curve,T_GridCurve>::GetCurve(){
+
+T_Curve & Curve::GetCurve(){
 	return *(this->curve);
 }
 
 
-template <typename T_Curve,typename T_GridCurve>
-void Curve<T_Curve,T_GridCurve>::Clear_up(){
+
+void Curve::Clear_up(){
 	delete this->curve;
 	free(this->id);
 }

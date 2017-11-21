@@ -2,13 +2,13 @@
 #define DISTANCE_H_
 
 #include <vector>
+#include "Types.h"
 
-template <typename T>
-long double DFT(const std::vector<T> &,const std::vector<T> &);
+long double DFT(const T_Curve &,const T_Curve &);
 
 
-template <typename T>
-long double DTW(const std::vector<T> &,const std::vector<T> &);
+
+long double DTW(const T_Curve &,const T_Curve &);
 
 
 

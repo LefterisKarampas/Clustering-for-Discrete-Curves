@@ -3,16 +3,12 @@
 #include <cstdlib>
 #include <vector>
 #include "../include/main_functions.h"
-#include "../include/Curve.h"
 #include "../include/Curve_Info.h"
-#include "../include/Distance.h"
-#include "../include/Types.h"
+#include "../include/LSH_Curve.h"
 
 
 using namespace std;
 
-template class Curve<T_Curve,T_GridCurve>;						//Initialize the template class for Curve
-template class Curve_Info<T_Curve>;
 
 
 int main(int argc,char **argv){
@@ -32,12 +28,31 @@ int main(int argc,char **argv){
 		exit(2);
 	}
 	//Read curves from file
-	Curve_Info<T_Curve> * curve_info = NULL;
-	if(read_curves(input_file,num_HT,num_grid,&curve_info)){
+	Curve_Info** curve_info = NULL;								//Structure for storing the curve's info
+	LSH_Curve ** LSH;											//LSH Structure
+	int n;
+	//Read curves and construct Curve's info structure and LSH
+	if((LSH = read_curves(input_file,num_HT,num_grid,&curve_info,&n)) == NULL){
 		cerr << "Failed read input file" << endl;
 		exit(3);
 	}
 
+
+
+	
+
+	//Destroy the curves and LSH structure
+	for(int i=0;i<n;i++){
+		if(curve_info[i] != NULL){
+			delete curve_info[i];
+		}
+	}
+	delete[] curve_info;
+
+	for(int i =0;i<num_HT;i++){
+		delete LSH[i];
+	}
+	delete[] LSH;
 
 	//Free the allocate space for arguments
 	free(input_file);
