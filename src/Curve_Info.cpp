@@ -18,7 +18,14 @@ const T_Curve & Curve_Info::Get_Curve(){
 }
 
 
-
 const char * Curve_Info::GetId(){
 	return this->id;
+}
+
+const int & Curve_Info::Get_Flag(){
+	return this->flag;
+};
+
+void Curve_Info::increment(){
+	this->flag++;
 }

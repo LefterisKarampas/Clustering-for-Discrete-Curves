@@ -8,16 +8,15 @@ using namespace std;
 
 class Node{
 private:
-	Curve * value;
+	int index;
+	Point *GridCurve;
 	Node * next;
 public:
-	Node(Curve * x);
+	Node(int,Point *);
 	~Node();
 	int Set_next(Node * next);
 	Node * GetNext();
-	Curve * GetValue();
-	void Clear_up();
-	void Search_Clear();
+	//Curve * GetValue();
 };
 
 

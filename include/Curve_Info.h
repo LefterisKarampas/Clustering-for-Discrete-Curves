@@ -13,6 +13,8 @@ public:
 	~Curve_Info();
 	const T_Curve & Get_Curve();
 	const char * GetId();
+	const int & Get_Flag();
+	void increment();
 };
 
 #endif

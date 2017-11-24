@@ -7,8 +7,10 @@
 #include "../include/LSH_Curve.h"
 
 
+
 using namespace std;
 
+Curve_Info** curve_info = NULL;								//Structure for storing the curve's info
 
 
 int main(int argc,char **argv){
@@ -28,7 +30,6 @@ int main(int argc,char **argv){
 		exit(2);
 	}
 	//Read curves from file
-	Curve_Info** curve_info = NULL;								//Structure for storing the curve's info
 	LSH_Curve ** LSH;											//LSH Structure
 	int n;
 	//Read curves and construct Curve's info structure and LSH
@@ -37,6 +38,7 @@ int main(int argc,char **argv){
 		exit(3);
 	}
 
+	
 
 
 	

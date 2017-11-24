@@ -1,11 +1,27 @@
 #include <iostream>
 #include <vector>
+#include "../include/Curve_Info.h"
 #include "../include/Node.h"
 
-//---------------------------Node Functions------------------------------
-//
+using namespace std;
 
-Node::Node(Curve * x):value(x){
+//---------------------------Node Functions------------------------------
+
+extern Curve_Info** curve_info;
+
+Node::Node(int index,Point *GridCurve){
+	this->index = index;
+	/*cout << index << ". " << curve_info[index]->GetId() << endl;
+	T_Curve temp(curve_info[index]->Get_Curve());
+	for(int i=0;i<temp.size();i++){
+		cout << "\t (";
+		int j;
+		for(j=0;j<temp[i].size()-1;j++){
+			cout << temp[i][j] <<",";
+		}
+		cout << temp[i][j] << ")" << endl;
+	}*/
+	this->GridCurve = GridCurve;
 	this->next = NULL;
 }
 
@@ -13,8 +29,7 @@ Node::Node(Curve * x):value(x){
 
 
 Node::~Node(){
-	if(this->value != NULL)
-		delete this->value;
+	delete this->GridCurve;
 	if(this->next != NULL){
 		delete this->next;
 	}
@@ -39,20 +54,9 @@ Node * Node::GetNext(){
 
 
 
-Curve * Node::GetValue(){
+/*Curve * Node::GetValue(){
 	return this->value;
-}
+}*/
 
 
 
-
-void Node::Clear_up(){
-	this->value->Clear_up();
-}
-
-
-
-
-void Node::Search_Clear(){
-	this->value = NULL;
-}

@@ -2,9 +2,10 @@
 #include "../include/HashFunctions.h"
 #include "../include/HashTable.h"
 #include "../include/Curve.h"
+#include "../include/Curve_Info.h"
 #include "../include/Grid.h"
 
-
+extern Curve_Info** curve_info;
 
 
 LSH_Curve::LSH_Curve(int k,int dim,int k_vect,int num_points,int buckets,int id,int(*hash_function)(const Point &,const std::vector<int> &,int,int,std::vector<double> **,double *)){
@@ -31,14 +32,14 @@ LSH_Curve::~LSH_Curve(){
 
 
 
-Point * LSH_Curve::Create_GridCurve(T_Curve *v){						//Get a curve and return the grid_curve
+Point * LSH_Curve::Create_GridCurve(const T_Curve & v){						//Get a curve and return the grid_curve
 	Point *Grid_Concat;
 	for(int i =0;i<this->k;i++){									//For each grid
 		if(i==0){
-			Grid_Concat = this->G[i]->Create_GridCurve(*v);			//get the grid_curve
+			Grid_Concat = this->G[i]->Create_GridCurve(v);			//get the grid_curve
 		}
 		else{
-			Point *temp = this->G[i]->Create_GridCurve(*v);				//get the grid_curve
+			Point *temp = this->G[i]->Create_GridCurve(v);				//get the grid_curve
 			unsigned int size = Grid_Concat->size();
 			bool cond = false;
 			for(unsigned int i=0;i<temp->size();i++){				//Concat the grid_curves without have 2 consecutive points
@@ -55,16 +56,14 @@ Point * LSH_Curve::Create_GridCurve(T_Curve *v){						//Get a curve and return t
 
 
 
-int LSH_Curve::LSH_Insert(T_Curve * v,char *id){					//Insert a curve in the LSH HashTable
-	Point* Grid_Concat = Create_GridCurve(v);							//First get the grid_curve
-	Curve * curve;
-	curve = new Curve(v,Grid_Concat,id); 								//Create a Curve object that contains the Curve info
-	return this->HT->Hash_Insert(curve);							//THen insert the new object to HT
+int LSH_Curve::LSH_Insert(int index){					//Insert a curve in the LSH HashTable
+	Point* Grid_Concat = Create_GridCurve(curve_info[index]->Get_Curve());						//First get the grid_curve
+	return this->HT->Hash_Insert(index,Grid_Concat);							//THen insert the new object to HT
 }
 
 
 
-
+/*
 List * LSH_Curve::LSH_Search(T_Curve * v,char *id,bool * flag){	 	//Search and return a List of neighbor Curves
 	Point* Grid_Concat = Create_GridCurve(v);								//Create a grid_curve
 	Curve * curve;
@@ -72,7 +71,7 @@ List * LSH_Curve::LSH_Search(T_Curve * v,char *id,bool * flag){	 	//Search and r
 	List* result = this->HT->Hash_Search(curve,flag);				//Search into HT
 	delete curve;														//Clear the used memory space to avoid memory leaks
 	return result;														//return the List
-}
+}*/
 
 
 

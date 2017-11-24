@@ -73,3 +73,6 @@ long double DTW(const std::vector<T> &v1,const std::vector<T> &v2){
 	}
 	return C[n-1][m-1];
 }
+
+
+

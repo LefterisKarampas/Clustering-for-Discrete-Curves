@@ -278,7 +278,7 @@ LSH_Curve ** read_curves(char *input_file,int num_HT,int num_grid,Curve_Info ***
 			new_curve = new Curve_Info(curve_points,id);
 			(*curve_info)[array_index] = new_curve;
 			for(int l = 0;l<num_HT;l++){
-					LSH[l]->LSH_Insert(curve_points,id);
+					LSH[l]->LSH_Insert(array_index);
 			}
 			array_index++;
 		}

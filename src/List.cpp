@@ -20,8 +20,8 @@ List::~List(){						//Destroy the list
 }
 
 					
-int List::List_Insert(Curve * v){		//Insert a new node to list		
-	Node *k = new Node(v);		//Create a node
+int List::List_Insert(int index,Point *GridCurve){		//Insert a new node to list		
+	Node *k = new Node(index,GridCurve);		//Create a node
 	if(this->head != NULL){					//If list is not empty,set head as next to the new node
 		k->Set_next(this->head);
 	}
@@ -32,7 +32,7 @@ int List::List_Insert(Curve * v){		//Insert a new node to list
 
 
 
-						//Search for nearest Curves
+/*						//Search for nearest Curves
 List * List::List_Search(Curve * v,bool *flag){
 	Node * temp;							
 	if(this->head != NULL){					//If list is empty,return NULL
@@ -57,10 +57,10 @@ List * List::List_Search(Curve * v,bool *flag){
 		result->head = this->head;			//Return all the list
 	}
 	return result;							//Return the list
-}
+}*/
 
 
-
+/*
 
 void List::Clear_up(){				
 	if(this->head != NULL){				
@@ -71,7 +71,7 @@ void List::Clear_up(){
 			temp = temp->GetNext();
 		}
 	}
-}
+}*/
 
 
 
@@ -82,7 +82,7 @@ void List::Set_NULL(){
 
 
 
-					//Remove the list with the result but only the node
+/*					//Remove the list with the result but only the node
 void List::Search_Clear(){		//not the info 
 	Node *temp;
 	Node *k;
@@ -96,11 +96,11 @@ void List::Search_Clear(){		//not the info
 		temp = k;
 	}
 	this->head = NULL;
-}
+}*/
 
 
 
-				//Find the LSH nearest neighbor
+/*				//Find the LSH nearest neighbor
 Curve * List::find_min(Curve curve,long double *min_distance,
 	long double (*distance)(const  std::vector< std::vector<double> > &,const std::vector< std::vector<double> > &)){
 	Node *temp;
@@ -217,4 +217,4 @@ Curve * List::find_nearest(Curve *curve,Curve *nearest_neigh,long double *neares
 		temp = temp->GetNext();
 	}
 	return nearest_neigh;
-}
+}*/

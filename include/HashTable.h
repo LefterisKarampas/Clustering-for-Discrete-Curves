@@ -11,11 +11,11 @@ private:
 public:
 	Bucket();
 	~Bucket();
-	int Bucket_Insert(Curve * );
-	List * Bucket_Search(Curve *,bool *);
-	void Clear_up();
+	int Bucket_Insert(int,Point *);
+	//List * Bucket_Search(Curve *,bool *);
+	//void Clear_up();
 	//Curve * find_nearest_min(Curve *,Curve *,long double *,bool *,double,std::vector<char *> *,Curve *,long double *,long double(*distance)(const T_Curve&,T_Curve&));
-	Curve * find_nearest(Curve*,Curve *,long double *,long double(*distance)(const T_Curve &,const T_Curve &));
+	//Curve * find_nearest(Curve*,Curve *,long double *,long double(*distance)(const T_Curve &,const T_Curve &));
 };
 
 
@@ -34,10 +34,10 @@ private:
 public:
 	HashTable(const int,const int,int(*hash_function)(const Point &,const std::vector<int> &,int,int,std::vector<double> **,double *));
 	~HashTable();
-	int Hash(Curve * x);
-	int Hash_Insert(Curve * x);
-	List * Hash_Search(Curve * x,bool *);
-	void Clear_up();
+	int Hash(Point *);
+	int Hash_Insert(int,Point *);
+	//List * Hash_Search(Curve * x,bool *);
+	//void Clear_up();
 	//Curve * Check_all(Curve *,Curve *,long double *,bool *,double,std::vector<char *> *,Curve *,long double *,long double(*distance)(const T_Curve&,const T_Curve&));
 };
 
