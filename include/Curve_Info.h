@@ -15,6 +15,7 @@ public:
 	const char * GetId();
 	const int & Get_Flag();
 	void increment();
+	void clear_flag();
 };
 
 #endif

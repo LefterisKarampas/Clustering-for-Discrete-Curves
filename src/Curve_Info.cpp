@@ -29,3 +29,8 @@ const int & Curve_Info::Get_Flag(){
 void Curve_Info::increment(){
 	this->flag++;
 }
+
+
+void Curve_Info::clear_flag(){
+	this->flag = 0;
+}

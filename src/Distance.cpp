@@ -17,7 +17,7 @@ T my_min(T x, T y){
 
 
 template <typename T>
-long double Euclidean_Distance(const std::vector<T> & v1,const std::vector<T> &v2){
+long double Euclidean_Distance(const T & v1,const T &v2){
  	long double sum = 0;
  	for(unsigned int i = 0;i<v1.size();i++){
  		sum += pow((v1[i] - v2[i]),2);
@@ -25,8 +25,8 @@ long double Euclidean_Distance(const std::vector<T> & v1,const std::vector<T> &v
  	return sqrt(sum);
  };
 
-template <typename T>
-long double DFT(const std::vector<T> & v1,const std::vector<T> &v2){
+
+long double DFT(const T_Curve & v1,const T_Curve &v2){
 	unsigned int n = v1.size();
 	unsigned int m = v2.size();
 	long double C[n][m];
@@ -50,8 +50,7 @@ long double DFT(const std::vector<T> & v1,const std::vector<T> &v2){
 	return C[n-1][m-1];
 }
 
-template <typename T>
-long double DTW(const std::vector<T> &v1,const std::vector<T> &v2){
+long double DTW(const T_Curve &v1,const T_Curve &v2){
 	unsigned int n = v1.size();
 	unsigned int m = v2.size();
 	long double C[n][m];

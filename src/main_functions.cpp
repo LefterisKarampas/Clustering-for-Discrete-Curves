@@ -285,10 +285,11 @@ LSH_Curve ** read_curves(char *input_file,int num_HT,int num_grid,Curve_Info ***
 		count++;
 	}
 
-	for(int i = array_index;array_index<*n;i++){
+	for(int i = array_index;i<*n;i++){
 		(*curve_info)[i] = NULL;
 	}
 
 	myfile.close();
+	*n = array_index;
 	return LSH;
 }
