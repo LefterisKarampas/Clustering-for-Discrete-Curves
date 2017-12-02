@@ -10,6 +10,7 @@
 using namespace std;
 
 extern Curve_Info** curve_info;
+extern double ** Distance_Table;
 
 int Random_Initialization(std::vector<Cluster> *Clusters,int num_clusters,int num_curves){
 	std::vector<int> centers;
@@ -24,7 +25,7 @@ int Random_Initialization(std::vector<Cluster> *Clusters,int num_clusters,int nu
 					break;
 				}
 			}
-			Cluster temp(new_center);
+			Cluster temp(new_center,curve_info[new_center]->Get_Curve_P());
 			Clusters->push_back(temp);
 			centers.push_back(new_center);
 			flag = 1;
@@ -43,7 +44,7 @@ int K_Means_Plusplus(std::vector<Cluster> *Clusters,int num_clusters,int num_cur
 		if(i == 0){
 			new_center = rand() % num_curves;
 		}
-		Cluster temp(new_center);
+		Cluster temp(new_center,curve_info[new_center]->Get_Curve_P());
 		Clusters->push_back(temp);
 		centers.push_back(new_center);
 		double max_dist; 
@@ -59,7 +60,26 @@ int K_Means_Plusplus(std::vector<Cluster> *Clusters,int num_clusters,int num_cur
 				min_distance.push_back(0.0);
 				continue;
 			}
-			double dist = (*distance)(curve_info[j]->Get_Curve(),curve_info[new_center]->Get_Curve());
+			//Get the distance if exists in Distance Table or Calculate and store it
+			double dist;
+			int index_b;
+			int index_l;
+			if(j > new_center){
+				index_b = j;
+				index_l = new_center;
+			}
+			else{
+				index_b = new_center;
+				index_l = j;
+			}
+			if(Distance_Table[index_b][index_l] != -1){
+				dist = Distance_Table[index_b][index_l];
+			}
+			else{
+				dist = (*distance)(curve_info[index_b]->Get_Curve(),curve_info[index_l]->Get_Curve());
+				Distance_Table[index_b][index_l] = dist;
+			}
+			//Distance_Table
 			if (j == 0){
 				max_dist = dist;
 			}

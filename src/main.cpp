@@ -16,6 +16,7 @@
 using namespace std;
 
 Curve_Info** curve_info = NULL;								//Structure for storing the curve's info
+double ** Distance_Table = NULL;
 
 int main(int argc,char **argv){
 	char * input_file = NULL;
@@ -41,6 +42,20 @@ int main(int argc,char **argv){
 		cerr << "Failed read input file" << endl;
 		exit(3);
 	}
+	Distance_Table = (double **)malloc(sizeof(double *)*n);
+	for(int i=0;i<n;i++){
+		Distance_Table[i] = (double *)malloc(sizeof(double)*(i+1));
+		for(int j=0;j<i+1;j++){
+			if(i == j){
+				Distance_Table[i][j] = 0;
+			}
+			else{
+				Distance_Table[i][j] = -1;
+			}
+			//cout << Distance_Table[i][j] << "  ";
+		}
+		//cout << endl;
+	}
 	long double (*distance)(const T_Curve &,const T_Curve &);
 	distance = &(DFT);
 	srand(time(NULL));
@@ -65,14 +80,10 @@ int main(int argc,char **argv){
 		for(assign = 0;assign <2;assign++){
 			switch(assign){
 				case 0:{
-					objective_value = Lloyd_Assignment(clusters,n,distance);
+					/*objective_value = Lloyd_Assignment(clusters,n,distance);
 					for(int i =0;i<num_clusters;i++){
 						std::vector<int>  temp = (*clusters)[i].Cluster_Get_Neighbors();
-						//std::vector<int>  temp_best = (*clusters)[i].Cluster_Get_SecondBest();
 						cout << (*clusters)[i].Cluster_Get_Center() << " " <<temp.size()<< endl;
-						/*for(int j=0;j<temp.size();j++){
-							cout << "\t" << curve_info[temp[j]]->GetId() << " " << temp_best[j] << endl;
-						}*/
 					}
 					do{					
 						PAM_Improved(clusters,distance);
@@ -87,10 +98,19 @@ int main(int argc,char **argv){
 						/*for(int j=0;j<temp.size();j++){
 							cout << "\t" << curve_info[temp[j]]->GetId() << " " << temp_best[j] << endl;
 						}*/
-					}
 					break;
+					//}
+					//break;
 				}
 				case 1:{
+					double prev;
+					objective_value = Lloyd_Assignment(clusters,n,distance);
+					do{
+						prev = objective_value;
+						Mean_Discrete_Frechet(clusters,distance);
+						objective_value = Lloyd_Assignment(clusters,n,distance);
+						cout << prev << " " << objective_value << endl;
+					}while(prev != objective_value);
 				}
 			}
 		}

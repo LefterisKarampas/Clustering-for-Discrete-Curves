@@ -13,8 +13,12 @@ Curve_Info::~Curve_Info(){
 }
 
 
-const T_Curve & Curve_Info::Get_Curve(){
+T_Curve & Curve_Info::Get_Curve(){
 	return *(this->curve);
+}
+
+T_Curve * Curve_Info::Get_Curve_P(){
+	return this->curve;
 }
 
 
@@ -33,4 +37,18 @@ void Curve_Info::increment(){
 
 void Curve_Info::clear_flag(){
 	this->flag = 0;
+}
+
+void LSH_Increment(int center){
+	this->flag++;
+	this->LSH_Center = center;
+}
+
+int Get_LSH_Center(){
+	if(this->flag % 2 == 0){
+		return -1;
+	}
+	else{
+		return this->LSH_Center;
+	}
 }
