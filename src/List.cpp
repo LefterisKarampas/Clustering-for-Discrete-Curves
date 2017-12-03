@@ -1,8 +1,26 @@
 #include <iostream>
 #include <vector>
 #include "../include/List.h"
+#include "../include/Curve_Info.h"
 
 using namespace std;
+extern Curve_Info** curve_info;
+extern double ** Distance_Table;	
+
+
+bool Compare_GridCurves(Point *p1,Point *p2){
+	if(p1->size() != p2->size()){
+		return false;
+	}
+	else{
+		for(unsigned int i=0;i<p1->size();i++){
+			if((*p1)[i] != (*p2)[i]){
+				return false;
+			}
+		}
+		return true;
+	}
+}
 
 //---------------------------List Functions------------------------------
 
@@ -28,6 +46,67 @@ int List::List_Insert(int index,Point *GridCurve){		//Insert a new node to list
 	this->head = k;							//Set the new node as head
 	this->count++;
 	return 0;
+}
+
+void List::List_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	std::vector<double> *Dist,long double (*distance)( T_Curve&, T_Curve &)){
+	Node * temp;							
+	if(this->head != NULL){					//If list is empty,return NULL
+		temp = this->head;
+	}
+	else{
+		return;
+	}
+	while(temp){							//For each list's node
+		if(!Compare_GridCurves(Grid_Curve,temp->Get_GridCurve())){
+			temp = temp->GetNext();
+			continue;
+		}
+		Closest_Neighbors->push_back(temp->GetIndex());
+		double dist = (*distance)(curve,temp->GetValue());
+		curve_info[temp->GetIndex()]->LSH_Increment(center,dist);
+		Dist->push_back(dist);
+		temp = temp->GetNext();
+	}
+}
+
+void List::List_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	long double (*distance)( T_Curve&, T_Curve &)){
+	Node * temp;							
+	if(this->head != NULL){					//If list is empty,return NULL
+		temp = this->head;
+	}
+	else{
+		return;
+	}
+	while(temp){							//For each list's node
+		if(!Compare_GridCurves(Grid_Curve,temp->Get_GridCurve())){
+			temp = temp->GetNext();
+			continue;
+		}
+		int neigh = temp->GetIndex();
+		int index_b;
+		int index_l;
+		if(neigh > center){
+			index_b = neigh;
+			index_l = center;
+		}
+		else{
+			index_b = center;
+			index_l = neigh;
+		}
+		double dist;
+		if(Distance_Table[index_b][index_l] == -1){
+			dist = (*distance)(curve,temp->GetValue());
+			Distance_Table[index_b][index_l] = dist;
+		}
+		else{
+			dist = Distance_Table[index_b][index_l];
+		}
+		Closest_Neighbors->push_back(neigh);
+		curve_info[neigh]->LSH_Increment(center,dist);
+		temp = temp->GetNext();
+	}
 }
 
 

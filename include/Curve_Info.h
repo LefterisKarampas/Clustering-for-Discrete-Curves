@@ -9,6 +9,7 @@ class Curve_Info{
 	char * id;
 	int flag;
 	int LSH_Center;
+	double LSH_dist;
 public:
 	Curve_Info(T_Curve *,char *);
 	~Curve_Info();
@@ -18,8 +19,9 @@ public:
 	const int & Get_Flag();
 	void increment();
 	void clear_flag();
-	void LSH_Increment(int);
+	void LSH_Increment(int,double);
 	int Get_LSH_Center();
+	double Get_LSH_dist();
 };
 
 #endif

@@ -30,7 +30,7 @@ long double Euclidean_Distance(const T & v1,const T &v2){
  };
 
 
-long double DFT(const T_Curve & v1,const T_Curve &v2){
+long double DFT(T_Curve & v1,T_Curve &v2){
 	unsigned int n = v1.size();
 	unsigned int m = v2.size();
 	long double C[n][m];
@@ -54,7 +54,7 @@ long double DFT(const T_Curve & v1,const T_Curve &v2){
 	return C[n-1][m-1];
 }
 
-long double DTW(const T_Curve &v1,const T_Curve &v2){
+long double DTW(T_Curve &v1,T_Curve &v2){
 	unsigned int n = v1.size();
 	unsigned int m = v2.size();
 	long double C[n][m];

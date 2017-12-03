@@ -52,11 +52,17 @@ Node * Node::GetNext(){
 }
 
 
-
-
-/*Curve * Node::GetValue(){
-	return this->value;
-}*/
+int Node::GetIndex(){
+	return this->index;
+}
 
 
 
+T_Curve & Node::GetValue(){
+	return curve_info[this->index]->Get_Curve();
+}
+
+
+Point * Node::Get_GridCurve(){
+	return this->GridCurve;
+}

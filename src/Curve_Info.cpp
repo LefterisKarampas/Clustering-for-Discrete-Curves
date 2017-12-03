@@ -39,16 +39,27 @@ void Curve_Info::clear_flag(){
 	this->flag = 0;
 }
 
-void LSH_Increment(int center){
-	this->flag++;
-	this->LSH_Center = center;
+void Curve_Info::LSH_Increment(int center,double dist){
+	if(this->flag % 2 == 0){
+		(this->flag)++;
+		this->LSH_Center = center;
+		this->LSH_dist = dist;
+	}
+	else if(this->LSH_dist >= dist){
+		this->LSH_Center = center;
+		this->LSH_dist = dist;
+	}
 }
 
-int Get_LSH_Center(){
+int Curve_Info::Get_LSH_Center(){
 	if(this->flag % 2 == 0){
 		return -1;
 	}
 	else{
 		return this->LSH_Center;
 	}
+}
+
+double Curve_Info::Get_LSH_dist(){
+	return this->LSH_dist;
 }

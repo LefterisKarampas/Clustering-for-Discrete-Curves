@@ -7,6 +7,7 @@
 #include <vector>
 #include "../include/generator.h"
 
+
 //rand [M,N]
 #define MIN 1
 #define MAX 1000
@@ -42,6 +43,21 @@ int Bucket::Bucket_Insert(int index,Point *GridCurve){
 	}
 	return this->list->List_Insert(index,GridCurve); 	//Insert a new object
 	//this->list->print();
+}
+
+void Bucket::Bucket_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	std::vector<double> *Dist,long double (*distance)( T_Curve&, T_Curve &)){
+	if(this->list == NULL){								//If list is empty
+		return;
+	}
+	this->list->List_Search(center,curve,Grid_Curve,Closest_Neighbors,Dist,distance); 
+}
+void Bucket::Bucket_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	long double (*distance)( T_Curve&, T_Curve &)){
+	if(this->list == NULL){								//If list is empty
+		return;
+	}
+	this->list->List_Search(center,curve,Grid_Curve,Closest_Neighbors,distance); 
 }
 
 
@@ -164,6 +180,26 @@ int HashTable::Hash_Insert(int index,Point *GridCurve){		//Insert a new object t
 	}
 	return this->T[bucket]->Bucket_Insert(index,GridCurve);					//Insert the object to the bucket
 
+}
+
+void HashTable::Hash_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	std::vector<double> *Dist,long double (*distance)( T_Curve&, T_Curve &)){
+	int bucket = this->Hash(Grid_Curve);									//Get the number of bucket
+	if(bucket >= this->buckets){								//Check if all OK
+		cerr << "Fail hash function: Index = " << bucket << endl;
+		return ;
+	}
+	this->T[bucket]->Bucket_Search(center,curve,Grid_Curve,Closest_Neighbors,Dist,distance);	
+}
+
+void HashTable::Hash_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	long double (*distance)( T_Curve&, T_Curve &)){
+	int bucket = this->Hash(Grid_Curve);									//Get the number of bucket
+	if(bucket >= this->buckets){								//Check if all OK
+		cerr << "Fail hash function: Index = " << bucket << endl;
+		return ;
+	}
+	this->T[bucket]->Bucket_Search(center,curve,Grid_Curve,Closest_Neighbors,distance);	
 }
 
 

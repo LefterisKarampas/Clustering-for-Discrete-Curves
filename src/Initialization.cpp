@@ -12,7 +12,7 @@ using namespace std;
 extern Curve_Info** curve_info;
 extern double ** Distance_Table;
 
-int Random_Initialization(std::vector<Cluster> *Clusters,int num_clusters,int num_curves){
+int Random_Initialization(std::vector<int> *Cluster_Centers,int num_clusters,int num_curves){
 	std::vector<int> centers;
 	int new_center;
 	int flag = 0;
@@ -25,8 +25,7 @@ int Random_Initialization(std::vector<Cluster> *Clusters,int num_clusters,int nu
 					break;
 				}
 			}
-			Cluster temp(new_center,curve_info[new_center]->Get_Curve_P());
-			Clusters->push_back(temp);
+			(*Cluster_Centers).push_back(new_center);
 			centers.push_back(new_center);
 			flag = 1;
 		}
@@ -35,7 +34,7 @@ int Random_Initialization(std::vector<Cluster> *Clusters,int num_clusters,int nu
 	return 0;
 }
 
-int K_Means_Plusplus(std::vector<Cluster> *Clusters,int num_clusters,int num_curves,long double (*distance)(const T_Curve &,const T_Curve &)){
+int K_Means_Plusplus(std::vector<int> *Cluster_Centers,int num_clusters,int num_curves,long double (*distance)(T_Curve &,T_Curve &)){
 	std::vector<int> centers;
 	std::vector<double> min_distance;
 	int new_center;
@@ -44,8 +43,7 @@ int K_Means_Plusplus(std::vector<Cluster> *Clusters,int num_clusters,int num_cur
 		if(i == 0){
 			new_center = rand() % num_curves;
 		}
-		Cluster temp(new_center,curve_info[new_center]->Get_Curve_P());
-		Clusters->push_back(temp);
+		(*Cluster_Centers).push_back(new_center);
 		centers.push_back(new_center);
 		double max_dist; 
 		for(int j=0;j<num_curves;j++){
@@ -136,6 +134,5 @@ int K_Means_Plusplus(std::vector<Cluster> *Clusters,int num_clusters,int num_cur
 			}
 		}
 	}
-
 	return 0;
 }

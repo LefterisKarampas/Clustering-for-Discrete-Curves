@@ -60,3 +60,4 @@ void Curve::Clear_up(){
 	delete this->curve;
 	free(this->id);
 }
+

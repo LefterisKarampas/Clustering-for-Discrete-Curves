@@ -4,6 +4,8 @@
 #include "List.h"
 #include "Curve.h"
 #include "Types.h"
+#include <vector>
+#include <iostream>
 
 class Bucket{
 private:
@@ -12,6 +14,10 @@ public:
 	Bucket();
 	~Bucket();
 	int Bucket_Insert(int,Point *);
+	void Bucket_Search(int ,T_Curve & ,Point *,std::vector<int> *,
+	std::vector<double> *,long double (*distance)( T_Curve&, T_Curve &));
+	void Bucket_Search(int ,T_Curve & ,Point *,std::vector<int> *,
+		long double (*distance)( T_Curve&, T_Curve &));
 	//List * Bucket_Search(Curve *,bool *);
 	//void Clear_up();
 	//Curve * find_nearest_min(Curve *,Curve *,long double *,bool *,double,std::vector<char *> *,Curve *,long double *,long double(*distance)(const T_Curve&,T_Curve&));
@@ -36,6 +42,10 @@ public:
 	~HashTable();
 	int Hash(Point *);
 	int Hash_Insert(int,Point *);
+	void Hash_Search(int ,T_Curve & ,Point *,std::vector<int> *,
+	std::vector<double> *,long double (*distance)( T_Curve&, T_Curve &));
+	void Hash_Search(int ,T_Curve & ,Point *,std::vector<int> *,
+		long double (*distance)( T_Curve&, T_Curve &));
 	//List * Hash_Search(Curve * x,bool *);
 	//void Clear_up();
 	//Curve * Check_all(Curve *,Curve *,long double *,bool *,double,std::vector<char *> *,Curve *,long double *,long double(*distance)(const T_Curve&,const T_Curve&));

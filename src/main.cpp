@@ -2,15 +2,13 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include "../include/main_functions.h"
 #include "../include/Curve_Info.h"
 #include "../include/LSH_Curve.h"
-#include "../include/Cluster.h"
-#include "../include/Initialization.h"
-#include "../include/Assignment.h"
 #include "../include/Distance.h"
-#include "../include/Update.h"
 
 
 using namespace std;
@@ -43,6 +41,10 @@ int main(int argc,char **argv){
 		exit(3);
 	}
 	Distance_Table = (double **)malloc(sizeof(double *)*n);
+
+	long double (*distance)(T_Curve &,T_Curve &);
+	distance = &(DFT);
+	srand(time(NULL));
 	for(int i=0;i<n;i++){
 		Distance_Table[i] = (double *)malloc(sizeof(double)*(i+1));
 		for(int j=0;j<i+1;j++){
@@ -52,77 +54,11 @@ int main(int argc,char **argv){
 			else{
 				Distance_Table[i][j] = -1;
 			}
-			//cout << Distance_Table[i][j] << "  ";
+		
 		}
-		//cout << endl;
 	}
-	long double (*distance)(const T_Curve &,const T_Curve &);
-	distance = &(DFT);
-	srand(time(NULL));
-	Clusters * clusters;
-	double objective_value;
-	double prev_value;
-	int init;
-	for(init=0;init<2;init++){
-		clusters = new Clusters();
-		switch(init){
-			case 0:{
-				cerr << "K_Means++ Starting now" << endl;
-				K_Means_Plusplus(clusters,num_clusters,n,distance);
-				break;
-			}
-			case 1:{
-				cerr <<endl << "Random_Initialization Starting now" << endl;
-				Random_Initialization(clusters,num_clusters,n);
-			}
-		}
-		int assign;
-		for(assign = 0;assign <2;assign++){
-			switch(assign){
-				case 0:{
-					/*objective_value = Lloyd_Assignment(clusters,n,distance);
-					for(int i =0;i<num_clusters;i++){
-						std::vector<int>  temp = (*clusters)[i].Cluster_Get_Neighbors();
-						cout << (*clusters)[i].Cluster_Get_Center() << " " <<temp.size()<< endl;
-					}
-					do{					
-						PAM_Improved(clusters,distance);
-						prev_value = objective_value;
-						objective_value = Lloyd_Assignment(clusters,n,distance);
-						cout << prev_value << " - " << objective_value << endl;
-					}while(prev_value != objective_value);
-					for(int i =0;i<num_clusters;i++){
-						std::vector<int>  temp = (*clusters)[i].Cluster_Get_Neighbors();
-						//std::vector<int>  temp_best = (*clusters)[i].Cluster_Get_SecondBest();
-						cout << (*clusters)[i].Cluster_Get_Center() << " " <<temp.size()<< endl;
-						/*for(int j=0;j<temp.size();j++){
-							cout << "\t" << curve_info[temp[j]]->GetId() << " " << temp_best[j] << endl;
-						}*/
-					break;
-					//}
-					//break;
-				}
-				case 1:{
-					double prev;
-					objective_value = Lloyd_Assignment(clusters,n,distance);
-					do{
-						prev = objective_value;
-						Mean_Discrete_Frechet(clusters,distance);
-						objective_value = Lloyd_Assignment(clusters,n,distance);
-						cout << prev << " " << objective_value << endl;
-					}while(prev != objective_value);
-				}
-			}
-		}
-		cout << "---------" <<endl << endl;
-		for(int i=0;i<n;i++){
-			curve_info[i]->clear_flag();
-		}
-		delete clusters;
-	}
-
+	Clustering(output_file,num_clusters,n,LSH,num_HT,distance,1);
 	
-
 	//Destroy the curves and LSH structure
 	for(int i=0;i<n;i++){
 		if(curve_info[i] != NULL){

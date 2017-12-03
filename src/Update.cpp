@@ -13,7 +13,7 @@ extern Curve_Info ** curve_info;
 extern double ** Distance_Table;
 
 
-double PAM_Improved(Clusters *clusters,long double (*distance)(const T_Curve &,const T_Curve &)){
+double PAM_Improved(Clusters *clusters,long double (*distance)(T_Curve &,T_Curve &)){
 	double objective_value = 0;
 	for(unsigned int i=0;i<clusters->size();i++){
 		Neighbors neigh = (*clusters)[i].Cluster_Get_Neighbors();
@@ -65,7 +65,7 @@ double PAM_Improved(Clusters *clusters,long double (*distance)(const T_Curve &,c
 
 
 
-double Mean_Discrete_Frechet(Clusters *clusters,long double (*distance)(const T_Curve &,const T_Curve &)){
+double Mean_Discrete_Frechet(Clusters *clusters,long double (*distance)(T_Curve &,T_Curve &)){
 	for(unsigned int i=0;i<clusters->size();i++){
 		Neighbors neigh = (*clusters)[i].Cluster_Get_Neighbors();
 		unsigned int num_neigh = neigh.size();
@@ -75,39 +75,36 @@ double Mean_Discrete_Frechet(Clusters *clusters,long double (*distance)(const T_
 			return 0.0;
 		}
 		double dist;
-		for(unsigned int j=0;j<num_neigh;j+=2){
-			if(j < num_neigh -1){
-				Mean_Curves->push_back(Mean_Frechet_Curve(curve_info[neigh[j]]->Get_Curve(),curve_info[neigh[j+1]]->Get_Curve(),&dist));
-				int index_b;
-				int index_l;
-				if(neigh[j] > neigh[j+1]){
-					index_b = neigh[j];
-					index_l = neigh[j+1];
-				}
-				else{
-					index_b = neigh[j+1];
-					index_l = neigh[j];
-				}
-				if(Distance_Table[index_b][index_l] == -1){
-					Distance_Table[index_b][index_l] = dist;
-				}
+		for(unsigned int j=0;j<num_neigh-1;j+=2){
+			Mean_Curves->push_back(Mean_Frechet_Curve(curve_info[neigh[j]]->Get_Curve(),curve_info[neigh[j+1]]->Get_Curve(),&dist));
+			int index_b;
+			int index_l;
+			if(neigh[j] > neigh[j+1]){
+				index_b = neigh[j];
+				index_l = neigh[j+1];
 			}
 			else{
-				flag = 1;
-				Mean_Curves->push_back(curve_info[neigh[j]]->Get_Curve_P());
+				index_b = neigh[j+1];
+				index_l = neigh[j];
 			}
+			if(Distance_Table[index_b][index_l] == -1){
+				Distance_Table[index_b][index_l] = dist;
+			}
+		}
+		
+		if(num_neigh % 2 == 1){
+			flag = 1;
+			Mean_Curves->push_back(curve_info[neigh[num_neigh-1]]->Get_Curve_P());
 		}
 		int loop = 0;
 		num_neigh = Mean_Curves->size();
 		while(num_neigh != 1){
 			std::vector<T_Curve *> *temp = new std::vector<T_Curve *>;
-			for(unsigned int j=0;j<num_neigh;j+=2){
-				if(j < num_neigh-1){
-					temp->push_back(Mean_Frechet_Curve(*((*Mean_Curves)[j]),*((*Mean_Curves)[j+1]),&dist));
-				}
-				else{
-					temp->push_back((*Mean_Curves)[j]);
-				}
+			for(unsigned int j=0;j<num_neigh-1;j+=2){
+				temp->push_back(Mean_Frechet_Curve(*((*Mean_Curves)[j]),*((*Mean_Curves)[j+1]),&dist));
+			}
+			if(num_neigh % 2 == 1){
+				temp->push_back((*Mean_Curves)[num_neigh-1]);
 			}
 			num_neigh = temp->size();
 			loop++;

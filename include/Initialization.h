@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 
-int Random_Initialization(Clusters *,int,int);
+int Random_Initialization(std::vector<int> *,int,int);
 
-int K_Means_Plusplus(Clusters *,int,int,long double (*distance)(const T_Curve &,const T_Curve &));
+int K_Means_Plusplus(std::vector<int> *,int,int,long double (*distance)( T_Curve &, T_Curve &));
 
 #endif

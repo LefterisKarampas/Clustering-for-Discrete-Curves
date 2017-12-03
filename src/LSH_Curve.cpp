@@ -4,6 +4,8 @@
 #include "../include/Curve.h"
 #include "../include/Curve_Info.h"
 #include "../include/Grid.h"
+#include <vector>
+#include <iostream>
 
 extern Curve_Info** curve_info;
 
@@ -62,6 +64,18 @@ int LSH_Curve::LSH_Insert(int index){					//Insert a curve in the LSH HashTable
 }
 
 
+
+void LSH_Curve::LSH_RangeSearch(int center,T_Curve & curve,std::vector<int> *Closest_Neighbors,
+	std::vector<double> *Dist,long double (*distance)( T_Curve&, T_Curve &)){
+	Point * Grid_Concat = Create_GridCurve(curve);
+	this->HT->Hash_Search(center,curve,Grid_Concat,Closest_Neighbors,Dist,distance);
+}
+
+void LSH_Curve::LSH_RangeSearch(int center,T_Curve & curve,std::vector<int> *Closest_Neighbors,
+	long double (*distance)( T_Curve&, T_Curve &)){
+	Point * Grid_Concat = Create_GridCurve(curve);
+	this->HT->Hash_Search(center,curve,Grid_Concat,Closest_Neighbors,distance);
+}
 
 /*
 List * LSH_Curve::LSH_Search(T_Curve * v,char *id,bool * flag){	 	//Search and return a List of neighbor Curves
