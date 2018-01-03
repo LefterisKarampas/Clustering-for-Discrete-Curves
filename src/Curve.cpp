@@ -9,7 +9,7 @@ using namespace std;
 
 //Create a Curve object
 
-Curve::Curve(T_Curve * curve_,Point * grid_curve_,char *id_):curve(curve_),grid_curve(grid_curve_){
+Curve::Curve(Object * curve_,Point * grid_curve_,char *id_):curve(curve_),grid_curve(grid_curve_){
 	this->id = id_;
 }
 
@@ -50,7 +50,7 @@ char * Curve::GetId(){
 
 
 
-T_Curve & Curve::GetCurve(){
+Object & Curve::GetCurve(){
 	return *(this->curve);
 }
 

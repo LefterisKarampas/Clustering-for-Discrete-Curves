@@ -17,14 +17,14 @@ private:
 public:
 	LSH_Curve(int,int,int,int,int,int,int(*hash_function)(const Point &,const std::vector<int> &,int,int,std::vector<double> **,double *));
 	~LSH_Curve();
-	Point * Create_GridCurve(const T_Curve &);
+	Point * Create_GridCurve(const Object &);
 	int LSH_Insert(int);
-	void LSH_RangeSearch(int ,T_Curve & ,std::vector<int> *,
-	std::vector<double> *,long double (*distance)( T_Curve&, T_Curve &));
-	void LSH_RangeSearch(int ,T_Curve & ,std::vector<int> *,
-		long double (*distance)( T_Curve&, T_Curve &));
-	//List * LSH_Search(T_Curve *,char *,bool *);
-	//Curve * Check_all(T_Curve *,char *,Curve * ,long double *,bool *,double,std::vector<char *> *,Curve *,long double *,long double (*distance)(const T_Curve &,const T_Curve &));
+	void LSH_RangeSearch(int ,Object & ,std::vector<int> *,
+	std::vector<double> *,long double (*distance)( Object&, Object &));
+	void LSH_RangeSearch(int ,Object & ,std::vector<int> *,
+		long double (*distance)( Object&, Object &));
+	//List * LSH_Search(Object *,char *,bool *);
+	//Curve * Check_all(Object *,char *,Curve * ,long double *,bool *,double,std::vector<char *> *,Curve *,long double *,long double (*distance)(const Object &,const Object &));
 };
 
 

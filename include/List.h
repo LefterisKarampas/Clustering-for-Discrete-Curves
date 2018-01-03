@@ -21,10 +21,10 @@ public:
 	//List * List_Search(Curve *,bool *);
 	//void Clear_up();
 	void Set_NULL();
-	void List_Search(int ,T_Curve & ,Point *,std::vector<int> *,
-	std::vector<double> *,long double (*distance)( T_Curve&, T_Curve &));
-	void List_Search(int ,T_Curve & ,Point *,std::vector<int> *,
-		long double (*distance)( T_Curve&, T_Curve &));
+	void List_Search(int ,Object & ,Point *,std::vector<int> *,
+	std::vector<double> *,long double (*distance)( Object&, Object &));
+	void List_Search(int ,Object & ,Point *,std::vector<int> *,
+		long double (*distance)( Object&, Object &));
 	//void Search_Clear();
 	/*Curve * find_min(Curve ,long double *,
 			long double (*distance)(const  std::vector< std::vector<double> > &,const std::vector< std::vector<double> > &),double,std::vector<char *> *);

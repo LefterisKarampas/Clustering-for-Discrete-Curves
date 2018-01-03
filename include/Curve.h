@@ -5,19 +5,19 @@
 #include <iostream>
 
 typedef std::vector<double> Point;
-typedef std::vector< Point > T_Curve;
+typedef std::vector< Point > Object;
 
 class Curve{
-	T_Curve * curve;
+	Object * curve;
 	Point *grid_curve;
 	char * id;
 public:
-	Curve(T_Curve *, Point *,char *);
+	Curve(Object *, Point *,char *);
 	~Curve();
 	const Point & Get_GridCurve();
 	bool Compare_GridCurve(Curve *);
 	char * GetId();
-	T_Curve & GetCurve();
+	Object & GetCurve();
 	void Clear_up();
 };
 

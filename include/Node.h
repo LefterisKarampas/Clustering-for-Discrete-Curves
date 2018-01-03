@@ -17,7 +17,7 @@ public:
 	int Set_next(Node * next);
 	Node * GetNext();
 	int GetIndex();
-	T_Curve & GetValue();
+	Object & GetValue();
 	Point *Get_GridCurve();
 };
 

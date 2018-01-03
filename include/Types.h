@@ -2,12 +2,12 @@
 #define _TYPES_H_
 
 #include <iostream>
-#include "Curve.h"
 #include "Cluster.h"
 #include <vector>
 
 typedef std::vector<double> Point;
-typedef std::vector< Point > T_Curve;
-typedef std::vector<Cluster> Clusters; 
+typedef std::vector< Point > Conform;
+typedef Conform Object;
+typedef std::vector<Cluster *> Clusters; 
 
 #endif

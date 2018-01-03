@@ -48,8 +48,8 @@ int List::List_Insert(int index,Point *GridCurve){		//Insert a new node to list
 	return 0;
 }
 
-void List::List_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
-	std::vector<double> *Dist,long double (*distance)( T_Curve&, T_Curve &)){
+void List::List_Search(int center,Object & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	std::vector<double> *Dist,long double (*distance)( Object&, Object &)){
 	Node * temp;							
 	if(this->head != NULL){					//If list is empty,return NULL
 		temp = this->head;
@@ -70,8 +70,8 @@ void List::List_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector
 	}
 }
 
-void List::List_Search(int center,T_Curve & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
-	long double (*distance)( T_Curve&, T_Curve &)){
+void List::List_Search(int center,Object & curve,Point * Grid_Curve,std::vector<int> *Closest_Neighbors,
+	long double (*distance)( Object&, Object &)){
 	Node * temp;							
 	if(this->head != NULL){					//If list is empty,return NULL
 		temp = this->head;

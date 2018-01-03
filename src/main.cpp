@@ -6,9 +6,7 @@
 #include <fstream>
 #include <vector>
 #include "../include/main_functions.h"
-#include "../include/Curve_Info.h"
-#include "../include/LSH_Curve.h"
-#include "../include/Distance.h"
+
 
 
 using namespace std;
@@ -42,7 +40,7 @@ int main(int argc,char **argv){
 	}
 	Distance_Table = (double **)malloc(sizeof(double *)*n);
 
-	long double (*distance)(T_Curve &,T_Curve &);
+	long double (*distance)(Object &,Object &);
 	distance = &(DFT);
 	srand(time(NULL));
 	for(int i=0;i<n;i++){

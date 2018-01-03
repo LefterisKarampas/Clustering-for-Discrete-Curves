@@ -12,7 +12,7 @@ extern Curve_Info** curve_info;
 Node::Node(int index,Point *GridCurve){
 	this->index = index;
 	/*cout << index << ". " << curve_info[index]->GetId() << endl;
-	T_Curve temp(curve_info[index]->Get_Curve());
+	Object temp(curve_info[index]->Get_Curve());
 	for(int i=0;i<temp.size();i++){
 		cout << "\t (";
 		int j;
@@ -58,7 +58,7 @@ int Node::GetIndex(){
 
 
 
-T_Curve & Node::GetValue(){
+Object & Node::GetValue(){
 	return curve_info[this->index]->Get_Curve();
 }
 

@@ -1,8 +1,8 @@
 #include "../include/Assignment.h"
-#include <iostream>
-#include "../include/Curve_Info.h"
+#include "../include/Object_Info.h"
 #include "../include/Cluster.h"
 #include "../include/LSH_Curve.h"
+#include "../include/Distance.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -12,119 +12,85 @@
 
 using namespace std;
 
-extern Curve_Info ** curve_info;
+extern Object_Info ** object_info;
 extern double ** Distance_Table;
 
-double Lloyd_Assignment(Clusters *clusters,int n,long double (*distance)(T_Curve &,T_Curve &)){
+double Lloyd_Assignment(Clusters *clusters,int n,double (*distance)(int,int)){
 	if(n <= 0){
 		cerr << "We don't have any curve\n" << endl;
 	}
 	double objective_value = 0;
 	//First assignment
-	if(curve_info[0]->Get_Flag() == 0){
+	if(object_info[0]->Get_Flag() == 0){
 		for(int i=0;i<n;i++){
 			int min;
 			double min_dist;
+			int second_best;
+			double second_dist;
 			for(unsigned int j=0;j<clusters->size();j++){
-				int center = (*clusters)[j].Cluster_Get_Center();
-				T_Curve center_curve = (*clusters)[j].Cluster_Get_CenterCuve();
-				double dist;
-				int index_b;
-				int index_l;
-				//Mean Frechet Distance
-				if(center < 0){
-					dist = (*distance)(curve_info[i]->Get_Curve(),center_curve);
-				}
-				else{
-					if(i > center){
-						index_b = i ;
-						index_l = center;
-					}
-					else{
-						index_b = center;
-						index_l = i;
-					}
-					if(Distance_Table[index_b][index_l] != -1){
-						dist = Distance_Table[index_b][index_l];
-					}
-					else{
-						dist = (*distance)(curve_info[index_b]->Get_Curve(),curve_info[index_l]->Get_Curve());
-						Distance_Table[index_b][index_l] = dist;
-					}
-				}
+				int center = (*clusters)[j]->Cluster_Get_Center();
+				double dist = Find_Distance(center,i,distance,Distance_Table);
 				if(j==0){
 					min = j;
 					min_dist = dist;
 				}
 				else if(min_dist > dist){
+					second_best = min;
+					second_dist = min_dist;
 					min_dist = dist;
 					min = j;
 				}
+				else if(j == 1 || dist < second_dist){
+					second_best = j;
+					second_dist = dist;
+				}
 			}
-			(*clusters)[min].Cluster_Insert(i,min_dist);
+			(*clusters)[min]->Cluster_Insert(i,min_dist);
 			objective_value += min_dist;
-			curve_info[i]->increment();
-			curve_info[i]->increment();
+			object_info[i]->Increase_Flag();
+			object_info[i]->Set_second_neigh(second_best);
 		}
 	}
 	else{
-		int flag = curve_info[0]->Get_Flag();
+		int flag = object_info[0]->Get_Flag();
 		for(unsigned int i=0;i<clusters->size();i++){
 			int removed = 0;
-			(*clusters)[i].Cluster_ClearValue();
-			std::vector<int>  neigh = (*clusters)[i].Cluster_Get_Neighbors();
+			std::vector<int> neigh = (*clusters)[i]->Cluster_Get_Neighbors();
 			for(unsigned int j=0;j<neigh.size();j++){
-				if(curve_info[neigh[j]]->Get_Flag() > flag){
+				if(object_info[neigh[j]]->Get_Flag() > flag){
 					continue;
 				}
 				int min;
 				double min_dist;
+				int second_best;
+				double second_dist;
 				for(unsigned int k=0;k<clusters->size();k++){
-					int center = (*clusters)[k].Cluster_Get_Center();
-					T_Curve & center_curve = (*clusters)[k].Cluster_Get_CenterCuve();
+					int center = (*clusters)[k]->Cluster_Get_Center();
 					double dist;
-					int index_b;
-					int index_l;
-					if(center < 0){
-						dist = (*distance)(curve_info[neigh[j]]->Get_Curve(),center_curve);
-					}
-					else{
-						if(neigh[j] > center){
-							index_b = neigh[j] ;
-							index_l = center;
-						}
-						else{
-							index_b = center;
-							index_l = neigh[j];
-						}
-						if(Distance_Table[index_b][index_l] != -1){
-							dist = Distance_Table[index_b][index_l];
-						}
-						else{
-							dist = (*distance)(curve_info[index_b]->Get_Curve(),curve_info[index_l]->Get_Curve());
-							Distance_Table[index_b][index_l] = dist;
-						}
-					}
+					dist = Find_Distance(center,neigh[j],distance,Distance_Table);
 					if(k==0){
 						min = k;
 						min_dist = dist;
 					}
 					else if(min_dist > dist){
+						second_best = min;
+						second_dist = min_dist;
 						min_dist = dist;
 						min = k;
 					}
+					else if(k == 1 || dist < second_dist){
+						second_best = k;
+						second_dist = dist;
+					}
 				}
 				if(min != i){
-					(*clusters)[min].Cluster_Insert(neigh[j],min_dist);
-					(*clusters)[i].Cluster_Remove_Neigh(j-removed);
+					(*clusters)[min]->Cluster_Insert(neigh[j],min_dist);
+					(*clusters)[i]->Cluster_Remove_Neigh(j-removed);
 					removed++;
 				}
-				else{
-					(*clusters)[i].Cluster_IncreaseValue(min_dist);
-				}
 				objective_value += min_dist;
-				curve_info[neigh[j]]->increment();
-				//curve_info[i]->increment();
+				object_info[neigh[j]]->Set_second_neigh(second_best);
+				object_info[neigh[j]]->Increase_Flag();
 			}
 		}
 	}
@@ -133,11 +99,11 @@ double Lloyd_Assignment(Clusters *clusters,int n,long double (*distance)(T_Curve
 
 
 
-double LSH_RangeSearch_Assignment(Clusters *clusters,int n,LSH_Curve ** LSH,int num_HT,long double (*distance)(T_Curve &,T_Curve &)){
+/*double LSH_RangeSearch_Assignment(Clusters *clusters,int n,LSH_Curve ** LSH,int num_HT,double (*distance)(int,int)){
 	int flag = 0;
 	int num_clusters = clusters->size();
 	int center;
-	int t = curve_info[0]->Get_Flag();
+	int t = object_info[0]->Get_Flag();
 
 	std::vector<int> *Closest_Neighbors = new std::vector<int>[num_clusters];
 	std::vector<double> *Dist;
@@ -178,10 +144,10 @@ double LSH_RangeSearch_Assignment(Clusters *clusters,int n,LSH_Curve ** LSH,int 
 			int k = counter -1;
 			while(j < counter){
 				int neigh = Closest_Neighbors[i][k];
-				if(curve_info[neigh]->Get_LSH_Center() == center){
-					double dist = curve_info[neigh]->Get_LSH_dist();
-					if((r > dist) && ((curve_info[neigh]->Get_Flag() % 2) == 1)){
-						curve_info[neigh]->increment();
+				if(object_info[neigh]->Get_LSH_Center() == center){
+					double dist = object_info[neigh]->Get_LSH_dist();
+					if((r > dist) && ((object_info[neigh]->Get_Flag() % 2) == 1)){
+						object_info[neigh]->increment();
 						flag =1;
 						objective_value += dist;
 						(*clusters)[i].Cluster_Insert(neigh,dist);
@@ -208,19 +174,19 @@ double LSH_RangeSearch_Assignment(Clusters *clusters,int n,LSH_Curve ** LSH,int 
 		for(int i=0;i<num_clusters;i++){
 			double temp_dist;
 			int center = (*clusters)[i].Cluster_Get_Center();
-			if(curve_info[j]->Get_Flag() < t+2){
+			if(object_info[j]->Get_Flag() < t+2){
 				if(center < 0){
-					temp_dist = (*distance)((*clusters)[i].Cluster_Get_CenterCuve(),curve_info[j]->Get_Curve());
+					temp_dist = (*distance)((*clusters)[i].Cluster_Get_CenterCuve(),object_info[j]->Get_Curve());
 				}
 				else if(center > j){
 					if(Distance_Table[center][j] == -1){
-						Distance_Table[center][j] = (*distance)((*clusters)[i].Cluster_Get_CenterCuve(),curve_info[j]->Get_Curve());
+						Distance_Table[center][j] = (*distance)((*clusters)[i].Cluster_Get_CenterCuve(),object_info[j]->Get_Curve());
 					}
 					temp_dist = Distance_Table[center][j];
 				}
 				else if(center < j){
 					if(Distance_Table[j][center] == -1){
-						Distance_Table[j][center] = (*distance)((*clusters)[i].Cluster_Get_CenterCuve(),curve_info[j]->Get_Curve());
+						Distance_Table[j][center] = (*distance)((*clusters)[i].Cluster_Get_CenterCuve(),object_info[j]->Get_Curve());
 					}
 					temp_dist = Distance_Table[j][center];
 				}
@@ -241,10 +207,10 @@ double LSH_RangeSearch_Assignment(Clusters *clusters,int n,LSH_Curve ** LSH,int 
 			max_assign++;
 			(*clusters)[min].Cluster_Insert(j,dist);
 			objective_value += dist;
-			if(curve_info[j]->Get_Flag() % 2 == 0){
-				curve_info[j]->increment();
+			if(object_info[j]->Get_Flag() % 2 == 0){
+				object_info[j]->increment();
 			}
-			curve_info[j]->increment();
+			object_info[j]->increment();
 		}
 	}
 	delete[] Closest_Neighbors;
@@ -252,4 +218,4 @@ double LSH_RangeSearch_Assignment(Clusters *clusters,int n,LSH_Curve ** LSH,int 
 		delete[] Dist;
 	}
 	return objective_value;
-}
+}*/

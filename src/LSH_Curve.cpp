@@ -34,7 +34,7 @@ LSH_Curve::~LSH_Curve(){
 
 
 
-Point * LSH_Curve::Create_GridCurve(const T_Curve & v){						//Get a curve and return the grid_curve
+Point * LSH_Curve::Create_GridCurve(const Object & v){						//Get a curve and return the grid_curve
 	Point *Grid_Concat;
 	for(int i =0;i<this->k;i++){									//For each grid
 		if(i==0){
@@ -65,20 +65,20 @@ int LSH_Curve::LSH_Insert(int index){					//Insert a curve in the LSH HashTable
 
 
 
-void LSH_Curve::LSH_RangeSearch(int center,T_Curve & curve,std::vector<int> *Closest_Neighbors,
-	std::vector<double> *Dist,long double (*distance)( T_Curve&, T_Curve &)){
+void LSH_Curve::LSH_RangeSearch(int center,Object & curve,std::vector<int> *Closest_Neighbors,
+	std::vector<double> *Dist,long double (*distance)( Object&, Object &)){
 	Point * Grid_Concat = Create_GridCurve(curve);
 	this->HT->Hash_Search(center,curve,Grid_Concat,Closest_Neighbors,Dist,distance);
 }
 
-void LSH_Curve::LSH_RangeSearch(int center,T_Curve & curve,std::vector<int> *Closest_Neighbors,
-	long double (*distance)( T_Curve&, T_Curve &)){
+void LSH_Curve::LSH_RangeSearch(int center,Object & curve,std::vector<int> *Closest_Neighbors,
+	long double (*distance)( Object&, Object &)){
 	Point * Grid_Concat = Create_GridCurve(curve);
 	this->HT->Hash_Search(center,curve,Grid_Concat,Closest_Neighbors,distance);
 }
 
 /*
-List * LSH_Curve::LSH_Search(T_Curve * v,char *id,bool * flag){	 	//Search and return a List of neighbor Curves
+List * LSH_Curve::LSH_Search(Object * v,char *id,bool * flag){	 	//Search and return a List of neighbor Curves
 	Point* Grid_Concat = Create_GridCurve(v);								//Create a grid_curve
 	Curve * curve;
 	curve = new Curve(v,Grid_Concat,id); 								
@@ -91,7 +91,7 @@ List * LSH_Curve::LSH_Search(T_Curve * v,char *id,bool * flag){	 	//Search and r
 
 
 								//Search for LSH nearest and true nearest neighbor
-/*Curve * LSH_Curve::Check_all(T_Curve *v,char *id,Curve * neigh,long double *neigh_dist,bool *cond,double R,std::vector<char *> *r_near,Curve *nearest_neigh,long double *nearest_dist,long double (*distance)(const T_Curve&,const T_Curve &)){
+/*Curve * LSH_Curve::Check_all(Object *v,char *id,Curve * neigh,long double *neigh_dist,bool *cond,double R,std::vector<char *> *r_near,Curve *nearest_neigh,long double *nearest_dist,long double (*distance)(const Object&,const Object &)){
 	Point * Grid_Concat = Create_GridCurve(v);								//Create a grid_curve
 	Curve * curve;
 	curve = new Curve(v,Grid_Concat,id);									//Create a Curve object that contains the Curve info

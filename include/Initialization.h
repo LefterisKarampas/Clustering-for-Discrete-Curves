@@ -8,6 +8,6 @@
 
 int Random_Initialization(std::vector<int> *,int,int);
 
-int K_Means_Plusplus(std::vector<int> *,int,int,long double (*distance)( T_Curve &, T_Curve &));
+int K_Means_Plusplus(std::vector<int> *,int,int,double (*distance)(int,int));
 
 #endif

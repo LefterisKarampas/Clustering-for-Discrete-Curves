@@ -4,9 +4,9 @@
 #include "Types.h"
 #include "Cluster.h"
 
-double PAM_Improved(Clusters *clusters,long double (*distance)( T_Curve &, T_Curve &));
+void PAM_Improved(Clusters *clusters,double (*distance)(int,int));
 
-double Mean_Discrete_Frechet(Clusters *clusters,long double (*distance)( T_Curve &, T_Curve &));
+double Mean_Discrete_Frechet(Clusters *clusters,int,double (*distance)( int,int));
 
 
 #endif

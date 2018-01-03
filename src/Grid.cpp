@@ -24,7 +24,7 @@ Grid::~Grid(){
 }
 
 
-Point * Grid::Create_GridCurve(const T_Curve & v){		//Create gric_curve
+Point * Grid::Create_GridCurve(const Object & v){		//Create gric_curve
 	Point *vec = new Point();
 	double prev;
 	//for each point
